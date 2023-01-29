@@ -1,0 +1,1 @@
+SELECT * FROM sellers WHERE seller_avito_id=%s;

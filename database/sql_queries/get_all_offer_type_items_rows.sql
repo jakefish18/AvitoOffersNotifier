@@ -1,0 +1,1 @@
+SELECT * FROM offer_type_items;
