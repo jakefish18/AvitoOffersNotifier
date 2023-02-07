@@ -3,7 +3,7 @@ INSERT INTO sellers(
     seller_name,
     seller_rating
 ) VALUES (
-    %d,
     %s,
-    %f
+    %s,
+    %s
 );

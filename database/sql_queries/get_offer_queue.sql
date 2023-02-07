@@ -1,0 +1,1 @@
+DELETE FROM offer_queue RETURNING *;

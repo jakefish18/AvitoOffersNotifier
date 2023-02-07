@@ -1,4 +1,4 @@
-from .table_handler import TableHandler
+from database.table_handler import TableHandler
 
 
 class OffersHandler(TableHandler):
@@ -38,3 +38,12 @@ class OffersHandler(TableHandler):
                         offer_description, offer_price, offer_currency, seller_id, offer_url)
                     )
                     return True
+
+    def get_offer_id(self, offer_avito_id: str):
+        """
+        Getting offer id by offer avito id.
+        """
+        sql_query = self._get_sql_query("get_offer_id_by_offer_avito_id.sql")
+        offer = self._execute(sql_query, (offer_avito_id, ), fetchall=True)
+
+        return offer[0][0]

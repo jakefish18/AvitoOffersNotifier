@@ -17,7 +17,7 @@ class SellersHanlder(TableHandler):
     def _is_seller(self, seller_avito_id: int):
         """Returning is seller with seller_avito_id in table."""
         sql_query = self._get_sql_query("is_seller.sql")
-        result = self._execute(sql_query, (seller_avito_id, ))
+        result = self._execute(sql_query, (seller_avito_id, ), fetchall=True)
 
         return len(result) > 0
 
@@ -29,7 +29,7 @@ class SellersHanlder(TableHandler):
             return False
 
         else:
-            sql_query = self._get_sql_query("add_seller")
+            sql_query = self._get_sql_query("add_seller.sql")
             self._execute(
                 sql_query,
                 (seller_avito_id, seller_name, seller_rating)

@@ -19,7 +19,7 @@ class OfferTypeItemsHandler(TableHandler):
     def _is_offer_type_item(self, offer_type_item: str) -> bool:
         """Returning True if there is offer_type_item in table."""
         sql_query = self._get_sql_query("is_offer_type_item.sql")
-        result = self._execute(sql_query, (offer_type_item, ))
+        result = self._execute(sql_query, (offer_type_item, ), fetchall=True)
 
         return len(result) > 0
 
@@ -31,7 +31,19 @@ class OfferTypeItemsHandler(TableHandler):
             sql_query = self._get_sql_query("add_offer_type_item.sql")
             self._execute(sql_query, (offer_type, offer_type_item, offer_type_city, offer_type_item_url))
             return True
-    
+
+    def get_offer_type_item_id(self, offer_type_item: str) -> int:
+        """
+        Getting offer type_item_id by offer_typ_item.
+        """
+        if self._is_offer_type_item(offer_type_item):
+            sql_query = self._get_sql_query("get_offer_type_item_id.sql")
+            offer_type_item_id = self._execute(sql_query, (offer_type_item, ), fetchall=True)[0][0]
+            return offer_type_item_id
+
+        else:
+            return 0
+
     def get_all_offer_types(self) -> List[Tuple[str]]:
         """
         Getting all offer_types from table.

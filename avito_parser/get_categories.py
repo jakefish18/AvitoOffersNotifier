@@ -58,9 +58,12 @@ def get_subcategories_urls(category_page_url: str) -> Dict[str, str]:
         subcategory_a = subcategory.find("a", class_="rubricator-list-item-link-uPiO2")
         subcategory_title = subcategory_a.get("title")
 
-        # Cleaning a city in the begining of the URL.
-        subcategory_url = "/".join(subcategory_a.get("href").split("/")[1:])
-        
+        # Cleaning the city in the begining of the URL.
+        print(subcategory_a.get("href"))
+        subcategory_url = "/".join(subcategory_a.get("href").split("/")[2:])
+        print(subcategory_url)
+        print()
+
         subcategories_urls[subcategory_title] = subcategory_url
 
     return subcategories_urls
@@ -86,5 +89,5 @@ def get_categories_urls() -> Dict[str, Dict[str, str]]:
 if __name__ == "__main__":
     categories_urls = get_categories_urls()
 
-    with open("./categories_urls.json", "w", encoding="utf8") as file:
+    with open("offer_type_urls.json", "w", encoding="utf8") as file:
         json.dump(categories_urls, file, ensure_ascii=False)

@@ -1,0 +1,1 @@
+SELECT user_id FROM users WHERE telegram_id=%s;

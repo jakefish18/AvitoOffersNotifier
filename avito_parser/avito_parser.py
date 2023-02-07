@@ -1,3 +1,4 @@
+import time
 import requests
 import asyncio
 import sys
@@ -6,7 +7,7 @@ from bs4 import BeautifulSoup
 from typing import List, Tuple
 from dataclasses import dataclass
 
-PATH_TO_PARSER_CONFIG = "/home/jakefish/Documents/GitHub/my/AvitoOffersNotifier/avito_parser/parser_config.json"
+PATH_TO_PARSER_CONFIG = "/root/AvitoOffersNotifier/avito_parser/parser_config.json"
 with open(PATH_TO_PARSER_CONFIG, "r") as file:
     parser_config = json.load(file)
 
@@ -34,30 +35,42 @@ class AvitoParser:
     """
     
     def __init__(self) -> None:
-        self.users_handler = database.UsersHanlder()
+        self.users_handler = database.UsersHandler()
         self.offers_handler = database.OffersHandler()
         self.sellers_handler = database.SellersHanlder()
-        self.user_offer_types_handler = database.UserOfferTypes()
+        self.user_offer_types_handler = database.UserOfferTypesHandler()
         self.offer_types_handler = database.OfferTypeItemsHandler()
+        self.offer_queue_handler = database.OfferQueueHandler()
 
     def run(self) -> None:
-        all_offer_types = self.offer_types_handler.get_all_offer_types()
+        """
+        Launching the infinite parser loop.
+        """
 
-        for offer_type in all_offer_types:
-            offer_type_offers = self.parse_page(offer_type[4])
+        while True:
+            all_offer_types = self.offer_types_handler.get_all_offer_types()
 
-            for offer in offer_type_offers:
-                self.offers_handler.add_offer(
-                    offer_type_id=int(offer_type[0]),
-                    offer_avito_id=offer.id,
-                    offer_title=offer.title,
-                    offer_city=offer_type[3],
-                    offer_description=offer.description,
-                    offer_price=offer.price,
-                    offer_currency=offer.currency,
-                    seller_id=-1,
-                    offer_url=offer.url
-                )
+            for offer_type in all_offer_types:
+                offer_type_offers = self.parse_page(offer_type[4])
+
+                for offer in offer_type_offers:
+                    is_new = self.offers_handler.add_offer(
+                        offer_type_id=int(offer_type[0]),
+                        offer_avito_id=offer.id,
+                        offer_title=offer.title,
+                        offer_city=offer_type[3],
+                        offer_description=offer.description,
+                        offer_price=offer.price,
+                        offer_currency=offer.currency,
+                        seller_id=-1,
+                        offer_url=offer.url
+                    )
+                    
+                    if is_new:
+                        offer_id = self.offers_handler.get_offer_id(offer.id)
+                        self.offer_queue_handler.add_offer(offer_type[0], offer_id)
+
+                time.sleep(5)
 
     def parse_page(self, offer_type_item_page_url: str) -> List[AvitoOffer]:
         """Parsing all offers from the page."""
@@ -85,7 +98,7 @@ class AvitoParser:
             price_and_currency = span_price.split(u'\xa0')
             currency = price_and_currency[-1]
             price = "".join(price_and_currency[:-1])
-            print(price, currency)
+            
 
             if price:
                 price = int(price)
@@ -99,7 +112,7 @@ class AvitoParser:
             # Idk why, but some offers haven't sellers.
             # seller_div = div_offer.find("div", class_="style-title-_wK5H")
             # if seller_div: offer.seller = seller_div.text
-            
+
             # The same problem with seller ratings.
             # seller_rating_div = div_offer.find("span", class_="desktop-1lslbsi")
             # if seller_rating_div: offer.seller_rating = seller_rating_div.text
@@ -111,6 +124,10 @@ class AvitoParser:
         return offers
 
 
-if __name__ == "__main__":
+def run_parser():
     avito_parser = AvitoParser()
     avito_parser.run()
+
+
+if __name__ == "__main__":
+    run_parser()

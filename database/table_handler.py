@@ -3,7 +3,7 @@ import json
 
 from typing import List, Tuple
 
-PATH_TO_DATABASE_CONFIG = "/home/jakefish/Documents/GitHub/my/AvitoOffersNotifier/database/database_config.json"
+PATH_TO_DATABASE_CONFIG = "/root/AvitoOffersNotifier/database/database_config.json"
 with open(PATH_TO_DATABASE_CONFIG, "r") as file:
     database_config = json.load(file)
 
@@ -65,7 +65,6 @@ class TableHandler:
         else empty list with one empty tuple will be returned.
         """
         self._create_cursor()
-        print(data)
         self.cursor.execute(query, data)
         self.connection.commit()
 

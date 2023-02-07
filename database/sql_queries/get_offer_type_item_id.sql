@@ -1,0 +1,1 @@
+SELECT offer_type_item_id FROM offer_type_items WHERE offer_type_item=%s;
