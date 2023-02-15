@@ -1,8 +1,6 @@
-import logging
-logging.basicConfig(filename='offer_query.log', encoding='utf-8', level=logging.DEBUG)
-
 from database.table_handler import TableHandler
 
+from typing import List, Tuple
 
 class OfferQueueHandler(TableHandler):
     """
@@ -17,7 +15,7 @@ class OfferQueueHandler(TableHandler):
         sql_query = self._get_sql_query("create_offer_queue_table.sql")
         self._execute(sql_query, ())
 
-    def _is_offer(self, offer_id: int):
+    def _is_offer(self, offer_id: int) -> bool:
         """
         Returning is offer in queue.
         """
@@ -29,6 +27,7 @@ class OfferQueueHandler(TableHandler):
     def add_offer(self, offer_type_id: int, offer_id: int):
         """
         Adding new offer into the notification queue.
+        Returning True if offer didn't exist.
         """
         if self._is_offer(offer_id):
             return False
@@ -38,12 +37,11 @@ class OfferQueueHandler(TableHandler):
             self._execute(sql_query, (offer_type_id, offer_id))
             return True
 
-    def get_offers(self):
+    def get_offers(self) -> List[Tuple[str]]:
         """
         Getting all offers from queue with delete.
         """
         sql_query = self._get_sql_query("get_offer_queue.sql")
         offers = self._execute(sql_query, (), fetchall=True)
-        logging.info(sql_query)
 
         return offers

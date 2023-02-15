@@ -57,8 +57,3 @@ class UsersHandler(TableHandler):
         user_telegram_id = self._execute(sql_query, (user_id, ), fetchall=True)[0][1]
         return user_telegram_id
 
-
-if __name__ == "__main__":
-    users_handler = UsersHandler("database/database_config.json")
-
-    users_handler.add_user(12321341)

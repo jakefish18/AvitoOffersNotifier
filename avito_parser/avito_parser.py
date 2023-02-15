@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 from typing import List, Tuple
 from dataclasses import dataclass
 
-PATH_TO_PARSER_CONFIG = "/root/AvitoOffersNotifier/avito_parser/parser_config.json"
+PATH_TO_PARSER_CONFIG = "/home/jakefish/Documents/GitHub/my/AvitoOffersNotifier/avito_parser/parser_config.json"
 with open(PATH_TO_PARSER_CONFIG, "r") as file:
     parser_config = json.load(file)
 
@@ -18,6 +18,7 @@ import database
 @dataclass
 class AvitoOffer:
     """Class for storing Avito offers."""
+    type_id: int = -1
     id: int = -1
     title: str = ""
     description: str = ""
@@ -46,7 +47,7 @@ class AvitoParser:
         """
         Launching the infinite parser loop.
         """
-
+        step = 0
         while True:
             all_offer_types = self.offer_types_handler.get_all_offer_types()
 
@@ -69,6 +70,7 @@ class AvitoParser:
                     if is_new:
                         offer_id = self.offers_handler.get_offer_id(offer.id)
                         self.offer_queue_handler.add_offer(offer_type[0], offer_id)
+                        print("ADDED")
 
                 time.sleep(5)
 
@@ -85,29 +87,49 @@ class AvitoParser:
 
         offers = []
 
+        # Sometimes main_offers_soup is None.
+        if not main_offers_soup:
+            return []
+
         for div_offer in main_offers_soup.find_all("div", class_="iva-item-root-_lk9K"):
             
             offer = AvitoOffer()
 
-            offer.id = div_offer.get("id")
-            offer.title = div_offer.find("h3", class_="title-root-zZCwT").text
-            offer.description = div_offer.find("div", class_="iva-item-text-Ge6dR").text
-            
-            # Splitting price and currency.
-            span_price = div_offer.find("span", class_="price-text-_YGDY").text
-            price_and_currency = span_price.split(u'\xa0')
-            currency = price_and_currency[-1]
-            price = "".join(price_and_currency[:-1])
-            
+            # There are problems with no description, no seller and e.g. problems.
 
-            if price:
-                price = int(price)
-            
-            else: 
-                price = 0
+            try:
+                offer.id = div_offer.get("id")
+            except:
+                pass
 
-            offer.price = price
-            offer.currency = currency
+            try:
+                offer.title = div_offer.find("h3", class_="title-root-zZCwT").text
+            except:
+                pass
+
+            try:
+                offer.description = div_offer.find("div", class_="iva-item-text-Ge6dR").text
+            except:
+                pass
+
+            try:
+                # Splitting price and currency.
+                span_price = div_offer.find("span", class_="price-text-_YGDY").text
+                price_and_currency = span_price.split(u'\xa0')
+                currency = price_and_currency[-1]
+                price = "".join(price_and_currency[:-1])
+
+
+                if price:
+                    price = int(price)
+
+                else:
+                    price = 0
+
+                offer.price = price
+                offer.currency = currency
+            except:
+                pass
 
             # Idk why, but some offers haven't sellers.
             # seller_div = div_offer.find("div", class_="style-title-_wK5H")

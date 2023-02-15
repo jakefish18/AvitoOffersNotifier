@@ -46,3 +46,12 @@ class UserOfferTypesHandler(TableHandler):
         sql_query = self._get_sql_query("get_users_by_type_item_id.sql")
         users = self._execute(sql_query, (offer_type_item_id, ), fetchall=True)
         return users
+
+    def get_user_offer_types(self, user_id: int) -> List[int]:
+        """Getting user offer type ids."""
+        sql_query = self._get_sql_query("get_user_offer_types.sql")
+        user_offer_types = self._execute(sql_query, (user_id, ), fetchall=True)
+        offer_type_ids = [user_offer_type[1] for user_offer_type in user_offer_types]
+
+        print(offer_type_ids)
+        return offer_type_ids

@@ -38,6 +38,7 @@ class OfferTypeItemsHandler(TableHandler):
         """
         if self._is_offer_type_item(offer_type_item):
             sql_query = self._get_sql_query("get_offer_type_item_id.sql")
+            print(sql_query)
             offer_type_item_id = self._execute(sql_query, (offer_type_item, ), fetchall=True)[0][0]
             return offer_type_item_id
 
@@ -54,5 +55,19 @@ class OfferTypeItemsHandler(TableHandler):
         4. offer_type_item_url
         """
         sql_query = self._get_sql_query("get_all_offer_type_items_rows.sql")
-        rows = self._execute(sql_query, ("offer_type_items", ), fetchall=True)
+        rows = self._execute(sql_query, (), fetchall=True)
         return rows
+
+    def get_offer_type_title(self, offer_type_item_id: int) -> str:
+        """Getting offer type title by offer type item id."""
+        sql_query = self._get_sql_query("get_offer_type_title_by_offer_type_item_id.sql")
+        print(sql_query, offer_type_item_id)
+
+        offer_type = self._execute(sql_query, (offer_type_item_id, ), fetchall=True)[0]
+
+        if offer_type:
+            offer_type_title = offer_type[0]
+            return offer_type_title
+
+        else:
+            return ""

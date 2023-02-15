@@ -36,7 +36,7 @@ async def del_offer_type_st2(message: types.message, state: FSMContext):
     user_id = users_handler.get_user_id(user_telegram_id)
     offer_type_item_id = offer_type_items_handler.get_offer_type_item_id(offer_type_item)
 
-    result = user_offer_types_handler.add_user_offer_type_item(
+    result = user_offer_types_handler.del_user_offer_type_item(
         user_id=user_id,
         offer_type_item_id=offer_type_item_id
     )

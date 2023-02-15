@@ -151,13 +151,13 @@ async def add_offer_type_st5(message: types.message, state: FSMContext):
     """
     user_telegram_id = message.from_user.id
     offer_type_item: str = message.text
-    offer_type_item = offer_type_item.replace(" ", "+")
+    offer_type_item_for_url = offer_type_item.replace(" ", "+")
 
     async with state.proxy() as data:
         offer_city = data["city"]
         offer_type = offer_types[data["main_type"]][data["subtype"]]
 
-        offer_type_item_url = f"https://avito.ru/{offer_city}/{offer_type}?q={offer_type_item}"
+        offer_type_item_url = f"https://avito.ru/{offer_city}/{offer_type}?q={offer_type_item_for_url}"
 
         # Adding offer type to offer_type_items table.
         result = offer_type_items_handler.add_offer_type_item(

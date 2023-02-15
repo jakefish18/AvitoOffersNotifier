@@ -1,4 +1,5 @@
 from database.table_handler import TableHandler
+from avito_parser.avito_parser import AvitoOffer
 
 
 class OffersHandler(TableHandler):
@@ -27,6 +28,9 @@ class OffersHandler(TableHandler):
                 """
                 Adding new offer into the table.
                 """
+
+                print(offer_city)
+
                 if self._is_offer(offer_avito_id):
                     return False
 
@@ -47,3 +51,23 @@ class OffersHandler(TableHandler):
         offer = self._execute(sql_query, (offer_avito_id, ), fetchall=True)
 
         return offer[0][0]
+
+    def get_offer_info(self, offer_id: int) -> AvitoOffer:
+        """
+        Getting offer info by offer_id.
+        """
+        offer = AvitoOffer()
+        sql_query = self._get_sql_query("get_offer_info_by_offer_id.sql")
+        offer_items = self._execute(sql_query, (offer_id, ), fetchall=True)[0]
+
+        offer.type_id = offer_items[1]
+        offer.id = offer_items[2]
+        offer.title = offer_items[3]
+        offer.city = offer_items[4]
+        offer.description = offer_items[5]
+        offer.price = offer_items[6]
+        offer.currency = offer_items[7]
+        offer.seller_id = offer_items[8]
+        offer.url = offer_items[9]
+
+        return offer
