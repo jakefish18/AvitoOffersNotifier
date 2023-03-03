@@ -1,17 +1,13 @@
 import time
 import requests
-import asyncio
 import sys
-import json
 from bs4 import BeautifulSoup
-from typing import List, Tuple
+from typing import List
 from dataclasses import dataclass
 
-PATH_TO_PARSER_CONFIG = "/home/jakefish/Documents/GitHub/my/AvitoOffersNotifier/avito_parser/parser_config.json"
-with open(PATH_TO_PARSER_CONFIG, "r") as file:
-    parser_config = json.load(file)
+from avito_parser.parser_config import PATH_TO_PROJECT
+sys.path.insert(0, PATH_TO_PROJECT)
 
-sys.path.insert(0, parser_config["PATH_TO_PROJECT"])
 import database
 
 

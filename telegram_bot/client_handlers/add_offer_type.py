@@ -43,12 +43,12 @@ class AddOfferTypeForm(StatesGroup):
     input_subtype = State()
     input_item = State()
 
-async def add_offer_type_st1(message: types.message):
+async def add_offer_type_st1(query: types.CallbackQuery):
     """
     Adding new offer type when
     user executes add_offer_type.
     """
-    user_telegram_id = message.from_user.id
+    user_telegram_id = query.from_user.id
     await AddOfferTypeForm.input_city.set()
     await bot.send_message(user_telegram_id, ADD_OFFER_TYPE_RESPONSE_1)
 
@@ -183,7 +183,8 @@ async def add_offer_type_st5(message: types.message, state: FSMContext):
 
     await state.finish()
 def register_add_offer_type_command(bot_dispatcher: Dispatcher):
-    bot_dispatcher.register_message_handler(add_offer_type_st1, commands=["add_offer_type"])
+    bot_dispatcher.register_callback_query_handler(add_offer_type_st1, text="add_offer_type")
+    # bot_dispatcher.register_message_handler(add_offer_type_st1, commands=["add_offer_type"])
     bot_dispatcher.register_message_handler(add_offer_type_st2, state=AddOfferTypeForm.input_city)
     bot_dispatcher.register_message_handler(add_offer_type_st3, state=AddOfferTypeForm.input_type)
     bot_dispatcher.register_message_handler(add_offer_type_st4, state=AddOfferTypeForm.input_subtype)

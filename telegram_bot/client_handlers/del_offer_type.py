@@ -17,12 +17,12 @@ class DelOfferTypeForm(StatesGroup):
     input_item = State()
 
 
-async def del_offer_type_st1(message: types.message):
+async def del_offer_type_st1(query: types.CallbackQuery):
     """
     Deleting added offer type when
     user executes del_offer_type.
     """
-    user_telegram_id = message.from_user.id
+    user_telegram_id = query.from_user.id
     await DelOfferTypeForm.input_item.set()
     await bot.send_message(user_telegram_id, DEL_OFFER_TYPE_RESPONSE_1)
 
@@ -56,5 +56,5 @@ async def del_offer_type_st2(message: types.message, state: FSMContext):
     await state.finish()
 
 def register_del_offer_type_command(bot_dispatcher: Dispatcher):
-    bot_dispatcher.register_message_handler(del_offer_type_st1, commands=["del_offer_type"])
+    bot_dispatcher.register_callback_query_handler(del_offer_type_st1, text="del_offer_type")
     bot_dispatcher.register_message_handler(del_offer_type_st2, state=DelOfferTypeForm.input_item)

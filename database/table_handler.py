@@ -1,11 +1,7 @@
 import psycopg2
-import json
-
 from typing import List, Tuple
 
-PATH_TO_DATABASE_CONFIG = "/home/jakefish/Documents/GitHub/my/AvitoOffersNotifier/database/database_config.json"
-with open(PATH_TO_DATABASE_CONFIG, "r") as file:
-    database_config = json.load(file)
+from database.database_config import DATABASE_HOST, DATABASE_USERNAME, DATABASE_NAME, DATABASE_PASSWORD, PATH_TO_SQL_QUERIES
 
 
 class TableHandler:
@@ -13,12 +9,12 @@ class TableHandler:
     Base table handler class.
     """
     def __init__(self) -> None:
-        self.database_host = database_config["DATABASE_HOST"]
-        self.database_username = database_config["DATABASE_USERNAME"]
-        self.database_name = database_config["DATABASE_NAME"]
-        self.database_password = database_config["DATABASE_PASSWORD"]
+        self.database_host = DATABASE_HOST
+        self.database_username = DATABASE_USERNAME
+        self.database_name = DATABASE_NAME
+        self.database_password = DATABASE_PASSWORD
 
-        self.path_to_sql_queries = database_config["PATH_TO_SQL_QUERIES"]
+        self.path_to_sql_queries = PATH_TO_SQL_QUERIES
 
     def open_connection(self) -> None:
         """

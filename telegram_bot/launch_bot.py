@@ -12,11 +12,17 @@ from client_handlers.start import register_start_command
 from client_handlers.add_offer_type import register_add_offer_type_command
 from client_handlers.del_offer_type import register_del_offer_type_command
 from client_handlers.list_offer_types import register_list_offer_types_command
+from client_handlers.menu import register_menu_command
+from client_handlers.cancel import register_cancel_command
+from client_handlers.help import register_help_command
 from client_notifier.notification_sender import UsersNotifier
 
 
 async def on_startup(bot_dispatcher: Dispatcher):
     register_start_command(bot_dispatcher)
+    register_cancel_command(bot_dispatcher)
+    register_menu_command(bot_dispatcher)
+    register_help_command(bot_dispatcher)
     register_add_offer_type_command(bot_dispatcher)
     register_del_offer_type_command(bot_dispatcher)
     register_list_offer_types_command(bot_dispatcher)
