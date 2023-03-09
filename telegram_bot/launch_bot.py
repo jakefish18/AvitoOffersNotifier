@@ -3,9 +3,9 @@ Importing all bot functions from files and bot launching.
 """
 
 import asyncio
+import logging
 from aiogram import Dispatcher
 from aiogram.utils import executor
-
 
 from init_bot import bot_dispatcher, bot
 from client_handlers.start import register_start_command
@@ -26,9 +26,11 @@ async def on_startup(bot_dispatcher: Dispatcher):
     register_add_offer_type_command(bot_dispatcher)
     register_del_offer_type_command(bot_dispatcher)
     register_list_offer_types_command(bot_dispatcher)
+    logging.info("commands settled up")
 
     user_notifier = UsersNotifier(bot)
     asyncio.create_task(user_notifier.run())
+    logging.info("user notifier have ran")
 
 def run_bot():
     executor.start_polling(
@@ -36,6 +38,7 @@ def run_bot():
         skip_updates=True,
         on_startup=on_startup
     )
+    logging.info("bot have ran")
 
 
 if __name__ == "__main__":

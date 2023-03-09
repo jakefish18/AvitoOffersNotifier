@@ -28,9 +28,6 @@ class OffersHandler(TableHandler):
                 """
                 Adding new offer into the table.
                 """
-
-                print(offer_city)
-
                 if self._is_offer(offer_avito_id):
                     return False
 

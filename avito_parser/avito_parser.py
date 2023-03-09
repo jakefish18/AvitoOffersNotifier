@@ -5,10 +5,10 @@ from bs4 import BeautifulSoup
 from typing import List
 from dataclasses import dataclass
 
-from avito_parser.parser_config import PATH_TO_PROJECT
+from parser_config import PATH_TO_PROJECT
 sys.path.insert(0, PATH_TO_PROJECT)
-
 import database
+from avito_parser.proxy_config import PROXY_CHANGE_URL, PROXY
 
 
 @dataclass
@@ -66,16 +66,21 @@ class AvitoParser:
                     if is_new:
                         offer_id = self.offers_handler.get_offer_id(offer.id)
                         self.offer_queue_handler.add_offer(offer_type[0], offer_id)
-                        print("ADDED")
+                        # print("ADDED")
 
-                time.sleep(5)
 
     def parse_page(self, offer_type_item_page_url: str) -> List[AvitoOffer]:
         """Parsing all offers from the page."""
         base_url = "https://www.avito.ru"
 
         # page_request = base_url + f"/{city}?q={q}&p={p}"
-        response = requests.get(offer_type_item_page_url)
+        response = requests.get(offer_type_item_page_url, proxies=PROXY)
+        print("cycle")
+
+        if response.status_code != 200:
+            print("PARSER CHANGE")
+            requests.get(PROXY_CHANGE_URL)
+            return []
 
         page_html = response.text
         page_html_soup = BeautifulSoup(page_html, "lxml")
