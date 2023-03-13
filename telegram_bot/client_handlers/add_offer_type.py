@@ -10,15 +10,14 @@ from telegram_bot.bot_config import PATH_TO_PROJECT
 from telegram_bot.client_handlers.reply_markups import generate_markup
 
 
-ADD_OFFER_TYPE_RESPONSE_1 = "Чтобы добавить новый товар для уведомлений, введите город, " \
-                            "с которого должен быть этот товар:"
+ADD_OFFER_TYPE_RESPONSE_1 = "Введите город, с которого надо искать объявления (пока что можно вводить только moskva, kazan или ufa):"
 ADD_OFFER_TYPE_ERROR_2 = "Такого города еще нет в боте. Чтобы добавить его, напишите @JakeFish"
-ADD_OFFER_TYPE_RESPONSE_2 = "Выберите категорию товара из списка:"
+ADD_OFFER_TYPE_RESPONSE_2 = "Выберите категорию товара из меню:"
 ADD_OFFER_TYPE_ERROR_3 = "Такой категории еще нет в боте. Чтобы добавить его, напишите @JakeFish"
-ADD_OFFER_TYPE_RESPONSE_3 = "Напишиште субкатегорию товара:"
+ADD_OFFER_TYPE_RESPONSE_3 = "Выерите субкатегорию товара из меню:"
 ADD_OFFER_TYPE_RESPONSE_4 = "Введите название товара:"
 ADD_OFFER_TYPE_ERROR_4 = "Такой категории еще нет в боте. Чтобы добавить его, напишите @JakeFish"
-ADD_OFFER_TYPE_RESPONSE_5 = "Успешно! Товар добавлен. Вам будут приходить уведомления, если появятся новые " \
+ADD_OFFER_TYPE_RESPONSE_5 = "✅ Успешно! Товар добавлен. Вам будут приходить уведомления, если появятся новые " \
                             "предложения с выбранного города."
 
 
@@ -58,7 +57,7 @@ async def add_offer_type_st2(message: types.message, state: FSMContext):
     """
 
     # TODO: cities
-    cities = ["ufa"]
+    cities = ["ufa", "moskva", "kazan"]
 
     user_telegram_id = message.from_user.id
     offer_type_city = message.text
@@ -67,6 +66,8 @@ async def add_offer_type_st2(message: types.message, state: FSMContext):
         async with state.proxy() as data:
             data["city"] = offer_type_city
             data.update()
+
+        print(main_types_markup)
 
         await bot.send_message(
             user_telegram_id,

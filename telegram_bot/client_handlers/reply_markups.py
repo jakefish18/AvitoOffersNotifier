@@ -59,8 +59,8 @@ def generate_inline_kbm(button_titles: List[List[List]]) -> InlineKeyboardMarkup
 
 kbm_main_menu = generate_inline_kbm(
     [
-        [["Информация", "help"]],
-        [["Добавить товар", "add_offer_type"], ["Удалить товар", "del_offer_type"]],
-        [["Вывести список товаров", "list_offer_types"]]
+        [["ℹ️Информация", "help"]],
+        [["📝Добавить товар", "add_offer_type"], ["🗑Удалить товар", "del_offer_type"]],
+        [["🗂Вывести список товаров", "list_offer_types"]]
     ]
 )

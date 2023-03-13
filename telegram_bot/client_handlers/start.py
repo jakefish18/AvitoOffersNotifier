@@ -5,7 +5,7 @@ from telegram_bot.init_bot import bot, users_handler
 from telegram_bot.client_handlers.reply_markups import kbm_main_menu
 
 
-START_COMMAND_RESPONSE = "Вы были успешно зарегестрированы! Чтобы узнать, как пользоваться ботом" \
+START_COMMAND_RESPONSE = "✅ Вы были успешно зарегестрированы! Чтобы узнать, как пользоваться ботом" \
                          "нажмите на кнопку \"Информация\" в меню."
 
 async def start(message: types.message):

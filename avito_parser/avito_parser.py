@@ -5,7 +5,7 @@ from bs4 import BeautifulSoup
 from typing import List
 from dataclasses import dataclass
 
-from parser_config import PATH_TO_PROJECT
+from avito_parser.parser_config import PATH_TO_PROJECT
 sys.path.insert(0, PATH_TO_PROJECT)
 import database
 from avito_parser.proxy_config import PROXY_CHANGE_URL, PROXY

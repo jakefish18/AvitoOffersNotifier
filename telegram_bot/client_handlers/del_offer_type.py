@@ -10,7 +10,7 @@ from telegram_bot.client_handlers.reply_markups import generate_markup
 
 DEL_OFFER_TYPE_RESPONSE_1 = "Чтобы удалить добавленный товар, введите название этого товара:"
 DEL_OFFER_TYPE_ERROR_2 = "Ошибка! Вы не добавляли такого товара!"
-DEL_OFFER_TYPE_RESPONSE_2 = "Успешно! Удалено."
+DEL_OFFER_TYPE_RESPONSE_2 = "✅ Успешно! Удалено."
 
 
 class DelOfferTypeForm(StatesGroup):

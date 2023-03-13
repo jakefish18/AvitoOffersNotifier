@@ -6,7 +6,7 @@ from telegram_bot.init_bot import bot
 from telegram_bot.client_handlers.reply_markups import kbm_main_menu
 
 
-CANCEL_COMMAND_RESPONSE = "Успешно! Отменено."
+CANCEL_COMMAND_RESPONSE = "✅ Успешно! Отменено."
 
 async def cancel(message: types.message, state: FSMContext):
     """
