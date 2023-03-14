@@ -23,22 +23,22 @@ class OffersHandler(TableHandler):
         return len(result) > 0
 
     def add_offer(self, offer_type_id: int, offer_avito_id: int, offer_title: str,
-            offer_city: str, offer_description: str, offer_price: int, offer_currency: str,
-            seller_id: int, offer_url: str) -> bool:
-                """
-                Adding new offer into the table.
-                """
-                if self._is_offer(offer_avito_id):
-                    return False
+                offer_city: str, offer_description: str, offer_price: int, offer_currency: str,
+                seller_id: int, offer_url: str) -> bool:
+        """
+        Adding new offer into the table.
+        """
+        if self._is_offer(offer_avito_id):
+            return False
 
-                else:
-                    sql_query = self._get_sql_query("add_offer.sql")
-                    self._execute(
-                        sql_query,
-                        (offer_type_id, offer_avito_id, offer_title, offer_city,
-                        offer_description, offer_price, offer_currency, seller_id, offer_url)
-                    )
-                    return True
+        else:
+            sql_query = self._get_sql_query("add_offer.sql")
+            self._execute(
+                sql_query,
+                (offer_type_id, offer_avito_id, offer_title, offer_city,
+                offer_description, offer_price, offer_currency, seller_id, offer_url)
+            )
+            return True
 
     def get_offer_id(self, offer_avito_id: str):
         """

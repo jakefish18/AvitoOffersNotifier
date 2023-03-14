@@ -1,9 +1,9 @@
+# Database config.
 DATABASE_HOST = ""
 DATABASE_NAME = ""
 DATABASE_USERNAME = ""
 DATABASE_PASSWORD = ""
 
+# Project config.
 PATH_TO_PROJECT = ""
 PATH_TO_SQL_QUERIES = ""
-
-

@@ -23,13 +23,19 @@ class OfferTypeItemsHandler(TableHandler):
 
         return len(result) > 0
 
-    def add_offer_type_item(self, offer_type: str, offer_type_item: str, offer_type_city: str, offer_type_item_url: str) -> bool:        
+    def add_offer_type_item(self, offer_type: str, offer_type_item: str, offer_type_city: str,
+                            offer_type_item_url: str, strict_match_flag: bool) -> bool:
+        """
+        Adding offer into the table if it hasn't been added before.
+        """
         if self._is_offer_type_item(offer_type_item):
             return False
 
         else:
             sql_query = self._get_sql_query("add_offer_type_item.sql")
-            self._execute(sql_query, (offer_type, offer_type_item, offer_type_city, offer_type_item_url))
+            self._execute(sql_query,
+                          (offer_type, offer_type_item, offer_type_city, offer_type_item_url, strict_match_flag)
+            )
             return True
 
     def get_offer_type_item_id(self, offer_type_item: str) -> int:

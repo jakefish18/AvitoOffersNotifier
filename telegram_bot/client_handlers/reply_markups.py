@@ -2,7 +2,7 @@ from aiogram.types import KeyboardButton, ReplyKeyboardMarkup, InlineKeyboardBut
 from typing import List
 
 
-def generate_markup(button_titles: List[List]) -> ReplyKeyboardMarkup:
+def generate_markup(button_titles: List[List], one_time_keyboard: bool = True) -> ReplyKeyboardMarkup:
     """
     Reply Keyboard creation.
     Generating keyboard markup by inputed list layout
@@ -14,7 +14,7 @@ def generate_markup(button_titles: List[List]) -> ReplyKeyboardMarkup:
     1 2 3
     4 5 6
     """
-    kbm = ReplyKeyboardMarkup()
+    kbm = ReplyKeyboardMarkup(one_time_keyboard=one_time_keyboard)
 
     for row in button_titles:
         keyboard_row_buttons = []

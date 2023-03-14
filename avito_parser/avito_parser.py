@@ -5,10 +5,10 @@ from bs4 import BeautifulSoup
 from typing import List
 from dataclasses import dataclass
 
-from avito_parser.parser_config import PATH_TO_PROJECT
+from parser_config import PATH_TO_PROJECT
 sys.path.insert(0, PATH_TO_PROJECT)
 import database
-from avito_parser.proxy_config import PROXY_CHANGE_URL, PROXY
+from proxy_config import PROXY_CHANGE_URL, PROXY
 
 
 @dataclass
@@ -49,8 +49,14 @@ class AvitoParser:
 
             for offer_type in all_offer_types:
                 offer_type_offers = self.parse_page(offer_type[4])
+                strict_match_flag = offer_type_offers[5]
 
                 for offer in offer_type_offers:
+
+                    # Checking for strict match
+                    if strict_match_flag and not self._is_strict_match(offer.title, offer_type[2]):
+                        continue
+
                     is_new = self.offers_handler.add_offer(
                         offer_type_id=int(offer_type[0]),
                         offer_avito_id=offer.id,
@@ -140,11 +146,22 @@ class AvitoParser:
             # seller_rating_div = div_offer.find("span", class_="desktop-1lslbsi")
             # if seller_rating_div: offer.seller_rating = seller_rating_div.text
 
-            offer.url = base_url + div_offer.find("a", class_="iva-item-sliderLink-uLz1v").get("href")
+            try:
+                offer.url = base_url + div_offer.find("a", class_="iva-item-sliderLink-uLz1v").get("href")
+
+            except:
+                pass
 
             offers.append(offer)
         
         return offers
+
+    def _is_strict_match(self, offer_title: str, offer_type_item: str):
+        """Checking that offer_type_item contains every word from offer_title."""
+        offer_title_words = [word.lower() for word in offer_title.split()]
+        offer_type_item_word = [word.lower() for word in offer_type_item.split()]
+
+        return all(word in offer_type_item_word for word in offer_title_words)
 
 
 def run_parser():

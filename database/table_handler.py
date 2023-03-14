@@ -1,8 +1,9 @@
 import psycopg2
 from typing import List, Tuple
 
-from database.database_config import DATABASE_HOST, DATABASE_USERNAME, DATABASE_NAME, DATABASE_PASSWORD, PATH_TO_SQL_QUERIES
-
+from database.database_config import (
+    DATABASE_HOST, DATABASE_USERNAME, DATABASE_NAME, DATABASE_PASSWORD, PATH_TO_SQL_QUERIES
+)
 
 class TableHandler:
     """
