@@ -11,12 +11,12 @@ from database.user_offers_handler import UserOfferTypesHandler
 from database.offer_queue_handler import OfferQueueHandler
 from database.offers_handler import OffersHandler
 from avito_parser.avito_parser import AvitoOffer
-from telegram_bot.bot_config import PATH_TO_PROJECT
+from core import config
 
 
 logging.basicConfig(
     level=logging.INFO,
-    filename=f"{PATH_TO_PROJECT}logs/client_notifier.log",
+    filename=config.CLIENT_NOTIFIER_LOGS,
     format="%(asctime)s %(levelname)s %(message)s",
     datefmt="%Y-%m-%d %H:%M:%S"
 )

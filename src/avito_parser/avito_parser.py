@@ -1,15 +1,10 @@
-import time
 import requests
-import sys
 from bs4 import BeautifulSoup
 from typing import List
 from dataclasses import dataclass
 
-from parser_config import PATH_TO_PROJECT
-sys.path.insert(0, PATH_TO_PROJECT)
+from core import config
 import database
-from proxy_config import PROXY_CHANGE_URL, PROXY
-
 
 @dataclass
 class AvitoOffer:
@@ -43,7 +38,6 @@ class AvitoParser:
         """
         Launching the infinite parser loop.
         """
-        step = 0
         while True:
             all_offer_types = self.offer_types_handler.get_all_offer_types()
 
@@ -80,12 +74,12 @@ class AvitoParser:
         base_url = "https://www.avito.ru"
 
         # page_request = base_url + f"/{city}?q={q}&p={p}"
-        response = requests.get(offer_type_item_page_url, proxies=PROXY)
+        response = requests.get(offer_type_item_page_url, proxies=config.PROXY)
         print("cycle")
 
         if response.status_code != 200:
             print("PARSER CHANGE")
-            requests.get(PROXY_CHANGE_URL)
+            requests.get(config.PROXY_CHANGE_URL)
             return []
 
         page_html = response.text

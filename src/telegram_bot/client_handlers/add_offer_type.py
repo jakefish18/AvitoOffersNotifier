@@ -7,7 +7,6 @@ from aiogram.dispatcher.filters.state import State, StatesGroup
 from aiogram.utils.callback_data import CallbackData
 
 from telegram_bot.init_bot import bot, bot_dispatcher, users_handler, offer_type_items_handler, user_offer_types_handler
-from telegram_bot.bot_config import PATH_TO_PROJECT
 from telegram_bot.client_handlers.reply_markups import generate_markup, generate_inline_kbm, kbm_main_menu
 
 
@@ -23,7 +22,7 @@ ADD_OFFER_TYPE_RESPONSE_6 = "✅ Успешно! Товар добавлен. В
                             "предложения с выбранного города."
 
 # Loading avito offer types json.
-with open(PATH_TO_PROJECT + "avito_parser/offer_type_urls.json", "r") as file:
+with open("avito_parser/offer_type_urls.json", "r") as file:
     offer_types = json.load(file)
 
 # Generating avito offer type markups.

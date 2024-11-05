@@ -7,15 +7,15 @@ import logging
 from aiogram import Dispatcher
 from aiogram.utils import executor
 
-from init_bot import bot_dispatcher, bot
-from client_handlers.start import register_start_command
-from client_handlers.add_offer_type import register_add_offer_type_command
-from client_handlers.del_offer_type import register_del_offer_type_command
-from client_handlers.list_offer_types import register_list_offer_types_command
-from client_handlers.menu import register_menu_command
-from client_handlers.cancel import register_cancel_command
-from client_handlers.help import register_help_command
-from client_notifier.notification_sender import UsersNotifier
+from telegram_bot.init_bot import bot_dispatcher, bot
+from telegram_bot.client_handlers.start import register_start_command
+from telegram_bot.client_handlers.add_offer_type import register_add_offer_type_command
+from telegram_bot.client_handlers.del_offer_type import register_del_offer_type_command
+from telegram_bot.client_handlers.list_offer_types import register_list_offer_types_command
+from telegram_bot.client_handlers.menu import register_menu_command
+from telegram_bot.client_handlers.cancel import register_cancel_command
+from telegram_bot.client_handlers.help import register_help_command
+from telegram_bot.client_notifier.notification_sender import UsersNotifier
 
 
 async def on_startup(bot_dispatcher: Dispatcher):

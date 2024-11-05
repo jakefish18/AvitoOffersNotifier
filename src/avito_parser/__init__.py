@@ -1,3 +1,2 @@
-import avito_parser.parser_config
 import avito_parser.avito_parser
 import avito_parser.get_categories

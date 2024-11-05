@@ -1,21 +1,19 @@
 import psycopg2
 from typing import List, Tuple
 
-from database.database_config import (
-    DATABASE_HOST, DATABASE_USERNAME, DATABASE_NAME, DATABASE_PASSWORD, PATH_TO_SQL_QUERIES
-)
+from core import config
 
 class TableHandler:
     """
     Base table handler class.
     """
     def __init__(self) -> None:
-        self.database_host = DATABASE_HOST
-        self.database_username = DATABASE_USERNAME
-        self.database_name = DATABASE_NAME
-        self.database_password = DATABASE_PASSWORD
+        self.database_host = config.DATABASE_HOST
+        self.database_username = config.DATABASE_USERNAME
+        self.database_name = config.DATABASE_NAME
+        self.database_password = config.DATABASE_PASSWORD
 
-        self.path_to_sql_queries = PATH_TO_SQL_QUERIES
+        self.path_to_sql_queries = config.PATH_TO_SQL_QUERIES
 
     def open_connection(self) -> None:
         """
