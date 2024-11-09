@@ -54,7 +54,7 @@ As you can see, you need to get the bot token from BotFather and create a postgr
 
 Last, run the bot:
 ```bash
-cd code
+cd src
 python3 main.py
 ```
 
