@@ -1,4 +1,5 @@
 import requests
+import time
 from bs4 import BeautifulSoup
 from typing import List
 from dataclasses import dataclass
@@ -38,12 +39,13 @@ class AvitoParser:
         """
         Launching the infinite parser loop.
         """
+        print("Parser settled up")
         while True:
             all_offer_types = self.offer_types_handler.get_all_offer_types()
 
             for offer_type in all_offer_types:
                 offer_type_offers = self.parse_page(offer_type[4])
-                strict_match_flag = offer_type_offers[5]
+                strict_match_flag = offer_type[5]
 
                 for offer in offer_type_offers:
 
@@ -68,23 +70,28 @@ class AvitoParser:
                         self.offer_queue_handler.add_offer(offer_type[0], offer_id)
                         # print("ADDED")
 
+                # In case there is not proxy.
+                if config.PROXY_CHANGE_URL == "":
+                    time.sleep(5)
 
     def parse_page(self, offer_type_item_page_url: str) -> List[AvitoOffer]:
         """Parsing all offers from the page."""
         base_url = "https://www.avito.ru"
 
         # page_request = base_url + f"/{city}?q={q}&p={p}"
-        response = requests.get(offer_type_item_page_url, proxies=config.PROXY)
-        print("cycle")
+        if config.PROXY["http"] != "":
+            response = requests.get(offer_type_item_page_url, proxies=config.PROXY)
+        else:
+            response = requests.get(offer_type_item_page_url)
 
-        if response.status_code != 200:
+        if response.status_code != 200 and config.PROXY_CHANGE_URL != "":
             print("PARSER CHANGE")
             requests.get(config.PROXY_CHANGE_URL)
             return []
 
         page_html = response.text
         page_html_soup = BeautifulSoup(page_html, "lxml")
-        main_offers_soup = page_html_soup.find("div", class_="items-items-kAJAg")
+        main_offers_soup = page_html_soup.find("div", class_="items-items-pZX46")
 
         offers = []
 
@@ -92,7 +99,7 @@ class AvitoParser:
         if not main_offers_soup:
             return []
 
-        for div_offer in main_offers_soup.find_all("div", class_="iva-item-root-_lk9K"):
+        for div_offer in main_offers_soup.find_all("div", class_="iva-item-root-Se7z4"):
             
             offer = AvitoOffer()
 
@@ -104,18 +111,18 @@ class AvitoParser:
                 pass
 
             try:
-                offer.title = div_offer.find("h3", class_="title-root-zZCwT").text
+                offer.title = div_offer.find("h3", class_="iva-item-title-CdRXl").text
             except:
                 pass
 
             try:
-                offer.description = div_offer.find("div", class_="iva-item-text-Ge6dR").text
+                offer.description = div_offer.find("div", class_="iva-item-descriptionStep-i2icy").text
             except:
                 pass
 
             try:
                 # Splitting price and currency.
-                span_price = div_offer.find("span", class_="price-text-_YGDY").text
+                span_price = div_offer.find("span", class_="iva-item-priceStep-TIzu3").text
                 price_and_currency = span_price.split(u'\xa0')
                 currency = price_and_currency[-1]
                 price = "".join(price_and_currency[:-1])
@@ -141,7 +148,7 @@ class AvitoParser:
             # if seller_rating_div: offer.seller_rating = seller_rating_div.text
 
             try:
-                offer.url = base_url + div_offer.find("a", class_="iva-item-sliderLink-uLz1v").get("href")
+                offer.url = base_url + div_offer.find("a", class_="iva-item-sliderLink-Fvfau").get("href")
 
             except:
                 pass
@@ -160,8 +167,14 @@ class AvitoParser:
 
 def run_parser():
     avito_parser = AvitoParser()
-    avito_parser.run()
 
+    while True:
+        try:
+            avito_parser.run()
+        except KeyboardInterrupt as e:
+            break
+        except:
+            print("INTERNET CONNECTION")
 
 if __name__ == "__main__":
     run_parser()

@@ -60,7 +60,12 @@ class TableHandler:
         else empty list with one empty tuple will be returned.
         """
         self._create_cursor()
-        self.cursor.execute(query, data)
+        
+        try:
+            self.cursor.execute(query, data)
+        except Exception as e:
+            print(e)
+
         self.connection.commit()
 
         if fetchall:

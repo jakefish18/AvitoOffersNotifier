@@ -13,13 +13,13 @@ from core import config
 import database
 
 
-# Logging config.
-logging.basicConfig(
-    level=logging.INFO,
-    filename=config.BOT_LOGS_FILEPATH,
-    format="%(asctime)s %(levelname)s %(message)s",
-    datefmt="%Y-%m-%d %H:%M:%S"
-)
+# # Logging config.
+# logging.basicConfig(
+#     level=logging.INFO,
+#     filename=config.BOT_LOGS_FILEPATH,
+#     format="%(asctime)s %(levelname)s %(message)s",
+#     datefmt="%Y-%m-%d %H:%M:%S"
+# )
 
 # Database handlers initialization.
 users_handler = database.UsersHandler()

@@ -26,19 +26,25 @@ async def on_startup(bot_dispatcher: Dispatcher):
     register_add_offer_type_command(bot_dispatcher)
     register_del_offer_type_command(bot_dispatcher)
     register_list_offer_types_command(bot_dispatcher)
-    logging.info("commands settled up")
+    print("commands settled up")
 
     user_notifier = UsersNotifier(bot)
     asyncio.create_task(user_notifier.run())
-    logging.info("user notifier have ran")
+    print("user notifier have ran")
+
 
 def run_bot():
     executor.start_polling(
         dispatcher=bot_dispatcher,
         skip_updates=True,
-        on_startup=on_startup
+        on_startup=on_startup,
+        allowed_updates=[]
     )
-    logging.info("bot have ran")
+    print("bot have ran")
+
+
+def run_bot_in_thread():
+    asyncio.run(run_bot())
 
 
 if __name__ == "__main__":

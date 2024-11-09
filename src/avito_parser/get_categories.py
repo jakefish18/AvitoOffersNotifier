@@ -22,7 +22,7 @@ def get_main_categories_urls() -> Dict[str, str]:
 
     main_categories_urls = {}
 
-    for main_category_div in avito_main_page_soup.find_all("div", class_="category-with-counters-item-HDr9u"):
+    for main_category_div in avito_main_page_soup.find_all("div", class_="new-rubricator-content-leftcontent-mtk_X"):
         main_category_a = main_category_div.find("a", class_="link-link-MbQDP")
         main_category_title = main_category_a.text
 
@@ -51,7 +51,7 @@ def get_subcategories_urls(category_page_url: str) -> Dict[str, str]:
     category_page_soup = BeautifulSoup(category_page_html, "lxml")
 
     all_categories_list = category_page_soup.find("ul", class_="rubricator-list-item-submenu-bQ0A4")
-    
+
     subcategories_urls = {}
 
     for subcategory in all_categories_list.find_all("li", class_="rubricator-list-item-item-WKnEv"):
